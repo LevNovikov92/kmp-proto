@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/lev.novikov/StudioProjects/proto/shared/build/intermediates/res/merged/release/anim-v21/mtrl_bottom_sheet_slide_in.xml",
+        "source": "/Users/lev.novikov/.gradle/caches/transforms-2/files-2.1/15737d4962b18aa07a3add13cbb6efa2/material-1.2.1/res/anim-v21/mtrl_bottom_sheet_slide_in.xml"
+    },
+    {
+        "merged": "/Users/lev.novikov/StudioProjects/proto/shared/build/intermediates/res/merged/release/anim-v21/design_bottom_sheet_slide_out.xml",
+        "source": "/Users/lev.novikov/.gradle/caches/transforms-2/files-2.1/15737d4962b18aa07a3add13cbb6efa2/material-1.2.1/res/anim-v21/design_bottom_sheet_slide_out.xml"
+    },
+    {
+        "merged": "/Users/lev.novikov/StudioProjects/proto/shared/build/intermediates/res/merged/release/anim-v21/design_bottom_sheet_slide_in.xml",
+        "source": "/Users/lev.novikov/.gradle/caches/transforms-2/files-2.1/15737d4962b18aa07a3add13cbb6efa2/material-1.2.1/res/anim-v21/design_bottom_sheet_slide_in.xml"
+    },
+    {
+        "merged": "/Users/lev.novikov/StudioProjects/proto/shared/build/intermediates/res/merged/release/anim-v21/mtrl_bottom_sheet_slide_out.xml",
+        "source": "/Users/lev.novikov/.gradle/caches/transforms-2/files-2.1/15737d4962b18aa07a3add13cbb6efa2/material-1.2.1/res/anim-v21/mtrl_bottom_sheet_slide_out.xml"
+    }
+]

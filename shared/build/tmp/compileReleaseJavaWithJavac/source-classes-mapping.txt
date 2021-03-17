@@ -1,0 +1,2 @@
+com/levnovikov/proto/shared/BuildConfig.java
+ com.levnovikov.proto.shared.BuildConfig

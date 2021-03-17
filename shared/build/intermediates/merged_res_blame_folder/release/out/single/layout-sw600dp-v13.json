@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/lev.novikov/StudioProjects/proto/shared/build/intermediates/res/merged/release/layout-sw600dp-v13/design_layout_snackbar.xml",
+        "source": "/Users/lev.novikov/.gradle/caches/transforms-2/files-2.1/15737d4962b18aa07a3add13cbb6efa2/material-1.2.1/res/layout-sw600dp-v13/design_layout_snackbar.xml"
+    },
+    {
+        "merged": "/Users/lev.novikov/StudioProjects/proto/shared/build/intermediates/res/merged/release/layout-sw600dp-v13/mtrl_layout_snackbar.xml",
+        "source": "/Users/lev.novikov/.gradle/caches/transforms-2/files-2.1/15737d4962b18aa07a3add13cbb6efa2/material-1.2.1/res/layout-sw600dp-v13/mtrl_layout_snackbar.xml"
+    }
+]
