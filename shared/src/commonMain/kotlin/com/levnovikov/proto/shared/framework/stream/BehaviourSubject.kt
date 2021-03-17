@@ -21,10 +21,13 @@ class BehaviourSubject<T>(default: T) : Subject<T> {
     }
 
     override fun next(v: T) {
+        lastValue = v
         listeners.forEach { it.onNext(v) }
     }
 
     fun next(fn: (T) -> T) {
-        listeners.forEach { it.onNext(fn(lastValue)) }
+        val value = fn(lastValue)
+        lastValue = value
+        listeners.forEach { it.onNext(value) }
     }
 }

@@ -6,19 +6,17 @@ package com.levnovikov.proto.shared.services.booking
  */
 
 fun BookingState.isIdle(): Boolean {
-    return id < 0 || isCompleted()
+    return current < 0
 }
 
 fun BookingState.currentStep(): Step {
     return steps[current]
 }
 
-fun BookingState.isCompleted(): Boolean {
-    return current >= 0
-}
-
 fun BookingState.completeCurrent(): BookingState {
-    if (isIdle()) return this
+    if (isIdle()) {
+        return this
+    }
 
     val nextStep = if (current == steps.lastIndex) {
         -1

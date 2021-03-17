@@ -2,6 +2,8 @@ package com.levnovikov.proto.shared.features.booking
 
 import com.levnovikov.proto.shared.features.booking.ui.DropOffUIState
 import com.levnovikov.proto.shared.features.booking.ui.IdleUIState
+import com.levnovikov.proto.shared.features.booking.ui.PickUpUIState
+import com.levnovikov.proto.shared.framework.Logger
 import com.levnovikov.proto.shared.framework.stream.Listener
 import com.levnovikov.proto.shared.framework.ui.Flow
 import com.levnovikov.proto.shared.services.booking.*
@@ -42,7 +44,7 @@ class BookingFlow(
     }
 
     private fun showPickup(step: Step.PickUp) {
-        post(DropOffUIState(step.pickup) { stateMachine.completeStep() })
+        post(PickUpUIState(step.pickup, step.stuff) { stateMachine.completeStep() })
     }
 
 }

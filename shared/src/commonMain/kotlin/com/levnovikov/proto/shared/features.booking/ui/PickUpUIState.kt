@@ -1,5 +1,7 @@
 package com.levnovikov.proto.shared.features.booking.ui
 
+import com.levnovikov.proto.shared.framework.ui.UIState
+
 /**
  * Author: lev.novikov
  * Date: 16/3/21.
@@ -7,6 +9,5 @@ package com.levnovikov.proto.shared.features.booking.ui
 data class PickUpUIState(
     val pickup: String,
     val stuff: String,
-    val etaSec: Int,
     val onPickup: () -> Unit
-)
+) : UIState
