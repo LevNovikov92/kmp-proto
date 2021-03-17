@@ -8,7 +8,7 @@
 
 @class SharedLoggerLevel, SharedKotlinEnum<E>, SharedKotlinArray<T>, SharedKVStore, SharedStep, SharedBookingState, SharedBookingStateMachine, SharedSerializableKVStore, SharedFlow, SharedDriverState, SharedAppFactory, SharedBookingFlow, SharedDropOffUIState, SharedIdleUIState, SharedPickUpUIState, SharedLoginReq, SharedLoginResp, SharedLoginErrUIState, SharedLoginPageUIState, SharedLoginFlow, SharedKotlinx_serialization_coreSerializersModule, SharedKotlinx_serialization_coreSerialKind, SharedKotlinNothing;
 
-@protocol SharedKotlinComparable, SharedListener, SharedStream, SharedSubject, SharedKSerializable, SharedUIState, SharedDriverStateRepo, SharedKotlinx_serialization_coreKSerializer, SharedLoginApi, SharedLoginApiDep, SharedKotlinIterator, SharedKotlinx_serialization_coreEncoder, SharedKotlinx_serialization_coreSerialDescriptor, SharedKotlinx_serialization_coreSerializationStrategy, SharedKotlinx_serialization_coreDecoder, SharedKotlinx_serialization_coreDeserializationStrategy, SharedKotlinx_serialization_coreCompositeEncoder, SharedKotlinAnnotation, SharedKotlinx_serialization_coreCompositeDecoder, SharedKotlinx_serialization_coreSerializersModuleCollector, SharedKotlinKClass, SharedKotlinKDeclarationContainer, SharedKotlinKAnnotatedElement, SharedKotlinKClassifier;
+@protocol SharedKotlinComparable, SharedListener, SharedStream, SharedSubject, SharedKSerializable, SharedUIState, SharedDriverStateRepo, SharedKotlinx_serialization_coreKSerializer, SharedLoginApi, SharedLoginNavigator, SharedLoginApiDep, SharedKotlinIterator, SharedKotlinx_serialization_coreEncoder, SharedKotlinx_serialization_coreSerialDescriptor, SharedKotlinx_serialization_coreSerializationStrategy, SharedKotlinx_serialization_coreDecoder, SharedKotlinx_serialization_coreDeserializationStrategy, SharedKotlinx_serialization_coreCompositeEncoder, SharedKotlinAnnotation, SharedKotlinx_serialization_coreCompositeDecoder, SharedKotlinx_serialization_coreSerializersModuleCollector, SharedKotlinKClass, SharedKotlinKDeclarationContainer, SharedKotlinKAnnotatedElement, SharedKotlinKClassifier;
 
 NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
@@ -144,12 +144,6 @@ __attribute__((swift_name("Greeting")))
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
 + (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
 - (NSString *)greeting __attribute__((swift_name("greeting()")));
-@end;
-
-__attribute__((swift_name("Navigator")))
-@protocol SharedNavigator
-@required
-- (void)goToBooking __attribute__((swift_name("goToBooking()")));
 @end;
 
 __attribute__((objc_subclassing_restricted))
@@ -439,10 +433,16 @@ __attribute__((swift_name("PickUpUIState")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("LoginFlow")))
 @interface SharedLoginFlow : SharedFlow
-- (instancetype)initWithApi:(id<SharedLoginApi>)api __attribute__((swift_name("init(api:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithApi:(id<SharedLoginApi>)api navigator:(id<SharedLoginNavigator>)navigator __attribute__((swift_name("init(api:navigator:)"))) __attribute__((objc_designated_initializer));
 - (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer)) __attribute__((unavailable));
 + (instancetype)new __attribute__((unavailable));
 - (void)doInit __attribute__((swift_name("doInit()")));
+@end;
+
+__attribute__((swift_name("LoginNavigator")))
+@protocol SharedLoginNavigator
+@required
+- (void)showBookingFlow __attribute__((swift_name("showBookingFlow()")));
 @end;
 
 __attribute__((swift_name("LoginApi")))
@@ -521,15 +521,17 @@ __attribute__((swift_name("LoginErrUIState")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("LoginPageUIState")))
 @interface SharedLoginPageUIState : SharedBase <SharedUIState>
-- (instancetype)initWithGreeting:(NSString *)greeting success:(BOOL)success onLogin:(void (^)(NSString *, NSString *))onLogin __attribute__((swift_name("init(greeting:success:onLogin:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithGreeting:(NSString *)greeting success:(BOOL)success onLogin:(void (^)(NSString *, NSString *))onLogin onEnter:(void (^)(void))onEnter __attribute__((swift_name("init(greeting:success:onLogin:onEnter:)"))) __attribute__((objc_designated_initializer));
 - (NSString *)component1 __attribute__((swift_name("component1()")));
 - (BOOL)component2 __attribute__((swift_name("component2()")));
 - (void (^)(NSString *, NSString *))component3 __attribute__((swift_name("component3()")));
-- (SharedLoginPageUIState *)doCopyGreeting:(NSString *)greeting success:(BOOL)success onLogin:(void (^)(NSString *, NSString *))onLogin __attribute__((swift_name("doCopy(greeting:success:onLogin:)")));
+- (void (^)(void))component4 __attribute__((swift_name("component4()")));
+- (SharedLoginPageUIState *)doCopyGreeting:(NSString *)greeting success:(BOOL)success onLogin:(void (^)(NSString *, NSString *))onLogin onEnter:(void (^)(void))onEnter __attribute__((swift_name("doCopy(greeting:success:onLogin:onEnter:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) NSString *greeting __attribute__((swift_name("greeting")));
+@property (readonly) void (^onEnter)(void) __attribute__((swift_name("onEnter")));
 @property (readonly) void (^onLogin)(NSString *, NSString *) __attribute__((swift_name("onLogin")));
 @property (readonly) BOOL success __attribute__((swift_name("success")));
 @end;
@@ -543,7 +545,7 @@ __attribute__((swift_name("LoginApiDep")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("LoginFactory")))
 @interface SharedLoginFactory : SharedBase
-- (instancetype)initWithApiDep:(id<SharedLoginApiDep>)apiDep __attribute__((swift_name("init(apiDep:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithApiDep:(id<SharedLoginApiDep>)apiDep navigator:(id<SharedLoginNavigator>)navigator __attribute__((swift_name("init(apiDep:navigator:)"))) __attribute__((objc_designated_initializer));
 - (SharedLoginFlow *)loginFlow __attribute__((swift_name("loginFlow()")));
 @end;
 

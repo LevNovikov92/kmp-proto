@@ -13,7 +13,8 @@ import com.levnovikov.proto.shared.framework.ui.Flow
  * Date: 14/3/21.
  */
 class LoginFlow(
-    private val api: LoginApi
+    private val api: LoginApi,
+    private val navigator: LoginNavigator
 ) : Flow() {
 
     private val logger = Logger()
@@ -23,7 +24,8 @@ class LoginFlow(
             LoginPageUIState(
                 greeting = "Yo!",
                 success = false,
-                onLogin = onLogin
+                onLogin = onLogin,
+                onEnter = onEnter
             )
         )
         logger.info("LoginFlow initialized")
@@ -41,6 +43,10 @@ class LoginFlow(
         })
     }
 
+    private val onEnter: () -> Unit = {
+        navigator.showBookingFlow()
+    }
+
     private fun showErr(err: String) {
         post(LoginErrUIState(err))
     }
@@ -50,7 +56,8 @@ class LoginFlow(
             LoginPageUIState(
                 greeting = "Yo, ${resp.name}!",
                 resp.success,
-                onLogin
+                onLogin,
+                onEnter
             )
         )
     }

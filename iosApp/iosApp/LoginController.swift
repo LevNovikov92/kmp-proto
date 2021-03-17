@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 import shared
 
-class LoginController: UIViewController, Listener {
+class LoginController: UIViewController, Listener, LoginNavigator {
 
-    var loginButton: UIButton!
-    var enterButton: UIButton!
-    var nameTextField: UITextField!
-    var passwordTextField: UITextField!
-    var greetingLabel: UILabel!
+    private var loginButton: UIButton!
+    private var enterButton: UIButton!
+    private var nameTextField: UITextField!
+    private var passwordTextField: UITextField!
+    private var greetingLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,12 +51,11 @@ class LoginController: UIViewController, Listener {
         enterButton.isHidden = true
         enterButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(enterButton)
-        enterButton.addTarget(self, action: #selector(onEnterAction), for: .touchUpInside)
+        enterButton.addTarget(self, action: #selector(handleEnterTouchUpInside), for: .touchUpInside)
 
         constraintsInit()
         
-        flow.getStream().listen(listener: self)
-        flow.doInit()
+        initFlow()
     }
 
     func constraintsInit() {
@@ -87,13 +86,28 @@ class LoginController: UIViewController, Listener {
         onLogin(nameTextField.text ?? "", passwordTextField.text ?? "")
     }
     
-    private let flow = LoginFactory(apiDep: LoginApi()).loginFlow()
-
+    @objc func handleEnterTouchUpInside(sender: UIButton!) {
+        onEnter()
+    }
+    
+    var flow: LoginFlow!
     private var onLogin: (String, String) -> Void = {_,_ in }
-
-    @objc func onEnterAction(sender: UIButton!) {
+    private var onEnter: () -> Void = {}
+    
+    func initFlow() {
+        let flow = LoginFactory(apiDep: LoginApi(), navigator: self).loginFlow()
+        flow.getStream().listen(listener: self)
+        flow.doInit()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        flow.dispose()
+        flow.getStream().dispose(listener: self)
+    }
+    
+    func showBookingFlow() {
         let bookingController = BookingController()
-        navigationController?.pushViewController(bookingController, animated: true)
+        present(bookingController, animated: true, completion: nil)
     }
 
     func onNext(v: Any?) {
@@ -103,8 +117,10 @@ class LoginController: UIViewController, Listener {
     }
 
     func updateLoginPage(state: LoginPageUIState) -> Void {
-        greetingLabel.text = state.greeting
         onLogin = state.onLogin
+        onEnter = state.onEnter
+        
+        greetingLabel.text = state.greeting
         if (state.success) {
             enterButton.isHidden = false
         }

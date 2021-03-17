@@ -13,6 +13,4 @@ class AppFactory {
     val bookingStateMachine = BookingStateMachine()
 
     val kvStore: SerializableKVStore = SerializableKVStore(KVStore())
-
-
 }

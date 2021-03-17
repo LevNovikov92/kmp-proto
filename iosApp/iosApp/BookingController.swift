@@ -12,9 +12,9 @@ import shared
 
 class BookingController: UIViewController, Listener {
 
-    var proceedButton: UIButton!
-    var assignBookingButton: UIButton!
-    var label: UILabel!
+    private var proceedButton: UIButton!
+    private var assignBookingButton: UIButton!
+    private var label: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,9 +39,7 @@ class BookingController: UIViewController, Listener {
 
         constraintsInit()
         
-        let flow = BookingFactory(appFactory: appFactory).bookingFlow()
-        flow.getStream().listen(listener: self)
-        flow.doInit()
+        initFlow()
     }
 
     func constraintsInit() {
@@ -67,7 +65,18 @@ class BookingController: UIViewController, Listener {
         appFactory.bookingStateMachine.addNewBooking(id: 1, pickup: "Mall", stuff: "Food", dropOff: "Home")
     }
     
-    private let flow: BookingFlow! = nil
+    private var flow: BookingFlow!
+    
+    func initFlow() {
+        flow = BookingFactory(appFactory: appFactory).bookingFlow()
+        flow.getStream().listen(listener: self)
+        flow.doInit()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        flow.dispose()
+        flow.getStream().dispose(listener: self)
+    }
     
     func onNext(v: Any?) {
         assignBookingButton.isHidden = !(v is IdleUIState)

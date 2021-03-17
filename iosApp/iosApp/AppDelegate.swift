@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         initDI()
         window = UIWindow(frame: UIScreen.main.bounds)
-//        let mainController = LoginController()
-        let mainController = BookingController()
+        let mainController = LoginController()
+//        let mainController = BookingController()
         window!.rootViewController = mainController
         window!.makeKeyAndVisible()
         return true
