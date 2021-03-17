@@ -422,17 +422,15 @@ __attribute__((swift_name("IdleUIState")))
 
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("PickUpUIState")))
-@interface SharedPickUpUIState : SharedBase
-- (instancetype)initWithPickup:(NSString *)pickup stuff:(NSString *)stuff etaSec:(int32_t)etaSec onPickup:(void (^)(void))onPickup __attribute__((swift_name("init(pickup:stuff:etaSec:onPickup:)"))) __attribute__((objc_designated_initializer));
+@interface SharedPickUpUIState : SharedBase <SharedUIState>
+- (instancetype)initWithPickup:(NSString *)pickup stuff:(NSString *)stuff onPickup:(void (^)(void))onPickup __attribute__((swift_name("init(pickup:stuff:onPickup:)"))) __attribute__((objc_designated_initializer));
 - (NSString *)component1 __attribute__((swift_name("component1()")));
 - (NSString *)component2 __attribute__((swift_name("component2()")));
-- (int32_t)component3 __attribute__((swift_name("component3()")));
-- (void (^)(void))component4 __attribute__((swift_name("component4()")));
-- (SharedPickUpUIState *)doCopyPickup:(NSString *)pickup stuff:(NSString *)stuff etaSec:(int32_t)etaSec onPickup:(void (^)(void))onPickup __attribute__((swift_name("doCopy(pickup:stuff:etaSec:onPickup:)")));
+- (void (^)(void))component3 __attribute__((swift_name("component3()")));
+- (SharedPickUpUIState *)doCopyPickup:(NSString *)pickup stuff:(NSString *)stuff onPickup:(void (^)(void))onPickup __attribute__((swift_name("doCopy(pickup:stuff:onPickup:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
-@property (readonly) int32_t etaSec __attribute__((swift_name("etaSec")));
 @property (readonly) void (^onPickup)(void) __attribute__((swift_name("onPickup")));
 @property (readonly) NSString *pickup __attribute__((swift_name("pickup")));
 @property (readonly) NSString *stuff __attribute__((swift_name("stuff")));
@@ -552,7 +550,6 @@ __attribute__((swift_name("LoginFactory")))
 @interface SharedBookingState (Extensions)
 - (SharedBookingState *)completeCurrent __attribute__((swift_name("completeCurrent()")));
 - (SharedStep *)currentStep __attribute__((swift_name("currentStep()")));
-- (BOOL)isCompleted __attribute__((swift_name("isCompleted()")));
 - (BOOL)isIdle __attribute__((swift_name("isIdle()")));
 @end;
 
