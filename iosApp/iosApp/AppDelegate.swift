@@ -15,20 +15,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var appFactory: AppFactory?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         initDI()
         window = UIWindow(frame: UIScreen.main.bounds)
-        let mainController = LoginController()
-//        let mainController = BookingController()
-        window!.rootViewController = mainController
+//        let loginController = LoginController()
+        let loginController = IdleController()
+        window!.rootViewController = loginController
         window!.makeKeyAndVisible()
         return true
     }
     
     func initDI() {
-        appFactory = AppFactory()
+        appFactory = AppFactory(offerApi: OfferApiImpl(), offerListener: OfferListenerImpl())
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -55,4 +54,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-

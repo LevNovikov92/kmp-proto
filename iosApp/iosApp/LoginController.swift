@@ -105,9 +105,9 @@ class LoginController: UIViewController, Listener, LoginNavigator {
         flow.getStream().dispose(listener: self)
     }
     
-    func showBookingFlow() {
-        let bookingController = BookingController()
-        present(bookingController, animated: true, completion: nil)
+    func showOrderFlow() {
+        let controller = IdleController()
+        present(controller, animated: true, completion: nil)
     }
 
     func onNext(v: Any?) {

@@ -58,14 +58,14 @@ class BookingController: UIViewController, Listener {
     
     
     @objc func onProceed(sender: UIButton!) {
-        appFactory.bookingStateMachine.completeStep()
+//        appFactory.orderService.completeStep()
     }
     
     @objc func onAssign(sender: UIButton!) {
-        appFactory.bookingStateMachine.addNewBooking(id: 1, pickup: "Mall", stuff: "Food", dropOff: "Home")
+//        appFactory.orderService.addNewOrder(order: Order(id: 1, ))
     }
     
-    private var flow: BookingFlow!
+    private var flow: OrderFlow!
     
     func initFlow() {
         flow = BookingFactory(appFactory: appFactory).bookingFlow()
@@ -79,12 +79,9 @@ class BookingController: UIViewController, Listener {
     }
     
     func onNext(v: Any?) {
-        assignBookingButton.isHidden = !(v is IdleUIState)
         proceedButton.isHidden = !assignBookingButton.isHidden
         
         switch v {
-        case is IdleUIState:
-            showIdle(state: v as! IdleUIState)
         case is PickUpUIState:
             showShowPickUp(state: v as! PickUpUIState)
         case is DropOffUIState:
@@ -96,11 +93,7 @@ class BookingController: UIViewController, Listener {
     func onDispose() {
         
     }
-    
-    private func showIdle(state: IdleUIState) {
-        label.text = "Idle screen"
-    }
-    
+
     private func showShowPickUp(state: PickUpUIState) {
         label.text = "Picking up '\(state.stuff)' from '\(state.pickup)'"
     }
