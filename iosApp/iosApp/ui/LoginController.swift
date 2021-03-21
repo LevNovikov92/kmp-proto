@@ -13,7 +13,6 @@ import shared
 class LoginController: UIViewController, Listener, LoginNavigator {
 
     private var loginButton: UIButton!
-    private var enterButton: UIButton!
     private var nameTextField: UITextField!
     private var passwordTextField: UITextField!
     private var greetingLabel: UILabel!
@@ -29,13 +28,13 @@ class LoginController: UIViewController, Listener, LoginNavigator {
         loginButton.addTarget(self, action: #selector(handleLoginTouchUpInside), for: .touchUpInside)
 
         nameTextField = UITextField(frame: .zero)
-        nameTextField.placeholder = "Login Name"
+        nameTextField.placeholder = "Login (any string)"
         nameTextField.borderStyle = .roundedRect
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameTextField)
 
         passwordTextField = UITextField(frame: .zero)
-        passwordTextField.placeholder = "Password"
+        passwordTextField.placeholder = "Password (any string)"
         passwordTextField.isSecureTextEntry = true
         passwordTextField.borderStyle = .roundedRect
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -45,13 +44,6 @@ class LoginController: UIViewController, Listener, LoginNavigator {
         greetingLabel.text = "Hi"
         greetingLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(greetingLabel)
-        
-        enterButton = UIButton(type: .system)
-        enterButton.setTitle("Enter", for: .normal)
-        enterButton.isHidden = true
-        enterButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(enterButton)
-        enterButton.addTarget(self, action: #selector(handleEnterTouchUpInside), for: .touchUpInside)
 
         constraintsInit()
         
@@ -60,10 +52,6 @@ class LoginController: UIViewController, Listener, LoginNavigator {
 
     func constraintsInit() {
         NSLayoutConstraint.activate([
-            enterButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
-            enterButton.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
-            enterButton.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
-            
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
 
@@ -118,15 +106,6 @@ class LoginController: UIViewController, Listener, LoginNavigator {
 
     func updateLoginPage(state: LoginPageUIState) -> Void {
         onLogin = state.onLogin
-        onEnter = state.onEnter
-        
         greetingLabel.text = state.greeting
-        if (state.success) {
-            enterButton.isHidden = false
-        }
-    }
-
-    func onDispose() {
-        //do nothing
     }
 }

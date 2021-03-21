@@ -9,6 +9,5 @@ import com.levnovikov.proto.shared.foundation.framework.UIState
 data class LoginPageUIState(
     val greeting: String,
     val success: Boolean,
-    val onLogin: (name: String, pass: String) -> Unit,
-    val onEnter: () -> Unit
+    val onLogin: (name: String, pass: String) -> Unit
 ) : UIState

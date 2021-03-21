@@ -65,7 +65,7 @@ class IdleFlow(
     private inner class OfferListener : Listener<OfferState> {
         override fun onNext(v: OfferState) {
             logger.info("OfferState: $v")
-            if (v !is OfferState.Idle) {
+            if (v is OfferState.Received) {
                 idleNavigator.showOffer()
             }
         }

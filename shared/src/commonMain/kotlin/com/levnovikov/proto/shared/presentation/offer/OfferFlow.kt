@@ -21,7 +21,10 @@ class OfferFlow(
 
     override fun init() {
         offerService.stream.listen(this)
-        logger.info("initialized")
+    }
+
+    override fun dispose() {
+        offerService.stream.dispose(this)
     }
 
     override fun onNext(v: OfferState) {
@@ -40,14 +43,16 @@ class OfferFlow(
                 showError = true
             ))
             is OfferState.Confirmed, is OfferState.Rejected -> offerService.acknowledge()
-            is OfferState.Idle -> navigator.finishOffer()
+            is OfferState.Idle -> {
+                dispose()
+                navigator.dismiss()
+            }
         }
     }
 
     private fun Offer.toUIState(showProgress: Boolean, showError: Boolean) =
         OfferUIState(
-            pickUp,
-            dropOff,
+            "Delivery from $pickUp to $dropOff",
             showProgress,
             showError,
             onConfirmed,
@@ -69,8 +74,7 @@ class OfferFlow(
 }
 
 data class OfferUIState(
-    val pickUp: String,
-    val dropOff: String,
+    val offerInfo: String,
     val showProgress: Boolean,
     val showError: Boolean,
     val confirm: () -> Unit,

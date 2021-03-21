@@ -1,6 +1,5 @@
 package com.levnovikov.proto.shared.business.services.driver
 
-import com.levnovikov.proto.shared.foundation.storage.KSerializable
 import com.levnovikov.proto.shared.foundation.storage.SerializableKVStore
 import kotlinx.serialization.Serializable
 
@@ -30,4 +29,4 @@ class DriverProgressRepoImpl(
 }
 
 @Serializable
-data class DailyProgress(val ordersCompleted: Int): KSerializable
+data class DailyProgress(val ordersCompleted: Int)

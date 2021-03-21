@@ -5,5 +5,5 @@ package com.levnovikov.proto.shared.presentation.offer
  * Date: 20/3/21.
  */
 interface OfferNavigator {
-    fun finishOffer()
+    fun dismiss()
 }

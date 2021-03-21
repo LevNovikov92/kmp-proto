@@ -42,4 +42,4 @@ fun OrderState.completeCurrent(orderId: Int): OrderState {
 }
 
 val Order.isCompleted: Boolean
-    get() = current >= 0
+    get() = current < 0

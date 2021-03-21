@@ -10,10 +10,9 @@ import Foundation
 import UIKit
 import shared
 
-class BookingController: UIViewController, Listener {
+class OrderController: UIViewController, Listener, OrderNavigator {
 
     private var proceedButton: UIButton!
-    private var assignBookingButton: UIButton!
     private var label: UILabel!
 
     override func viewDidLoad() {
@@ -31,14 +30,8 @@ class BookingController: UIViewController, Listener {
         view.addSubview(proceedButton)
         proceedButton.addTarget(self, action: #selector(onProceed), for: .touchUpInside)
         
-        assignBookingButton = UIButton(type: .system)
-        assignBookingButton.setTitle("Assign booking", for: .normal)
-        assignBookingButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(assignBookingButton)
-        assignBookingButton.addTarget(self, action: #selector(onAssign), for: .touchUpInside)
-
         constraintsInit()
-        
+
         initFlow()
     }
 
@@ -47,10 +40,7 @@ class BookingController: UIViewController, Listener {
             proceedButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             proceedButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            assignBookingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            assignBookingButton.centerYAnchor.constraint(equalTo: proceedButton.topAnchor, constant: -20),
-
-            label.bottomAnchor.constraint(equalTo: assignBookingButton.topAnchor, constant: -20),
+            label.bottomAnchor.constraint(equalTo: proceedButton.topAnchor, constant: -20),
             label.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: 20),
             label.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -20),
         ])
@@ -58,17 +48,15 @@ class BookingController: UIViewController, Listener {
     
     
     @objc func onProceed(sender: UIButton!) {
-//        appFactory.orderService.completeStep()
+        proceed()
     }
-    
-    @objc func onAssign(sender: UIButton!) {
-//        appFactory.orderService.addNewOrder(order: Order(id: 1, ))
-    }
-    
+
+    private var proceed: () -> Void = {}
+
     private var flow: OrderFlow!
     
     func initFlow() {
-        flow = BookingFactory(appFactory: appFactory).bookingFlow()
+        flow = OrderFactory(appFactory: appFactory, orderNavigator: self).bookingFlow()
         flow.getStream().listen(listener: self)
         flow.doInit()
     }
@@ -79,19 +67,18 @@ class BookingController: UIViewController, Listener {
     }
     
     func onNext(v: Any?) {
-        proceedButton.isHidden = !assignBookingButton.isHidden
-        
+        print(">>> OrderController: state received: \(v ?? "nil")")
         switch v {
         case is PickUpUIState:
-            showShowPickUp(state: v as! PickUpUIState)
+            let state = v as! PickUpUIState
+            proceed = state.onPickup
+            showShowPickUp(state: state)
         case is DropOffUIState:
-            showDropOff(state: v as! DropOffUIState)
+            let state = v as! DropOffUIState
+            proceed = state.onDropOff
+            showDropOff(state: state)
         default: break
         }
-    }
-    
-    func onDispose() {
-        
     }
 
     private func showShowPickUp(state: PickUpUIState) {
@@ -101,5 +88,9 @@ class BookingController: UIViewController, Listener {
     private func showDropOff(state: DropOffUIState) {
         label.text = "Driving to \(state.dropOff)"
     }
-    
+
+    func dismiss() {
+        appFactory.driverService.incrementCompletedOrderCounter()
+        dismiss(animated: true)
+    }
 }

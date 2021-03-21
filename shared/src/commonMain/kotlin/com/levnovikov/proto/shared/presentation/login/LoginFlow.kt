@@ -2,7 +2,6 @@ package com.levnovikov.proto.shared.presentation.login
 
 import com.levnovikov.proto.shared.presentation.login.api.LoginApi
 import com.levnovikov.proto.shared.presentation.login.api.LoginReq
-import com.levnovikov.proto.shared.presentation.login.api.LoginResp
 import com.levnovikov.proto.shared.foundation.Logger
 import com.levnovikov.proto.shared.foundation.framework.Flow
 import com.levnovikov.proto.shared.presentation.login.ui.LoginErrUIState
@@ -22,10 +21,9 @@ class LoginFlow(
     override fun init() {
         post(
             LoginPageUIState(
-                greeting = "Yo!",
+                greeting = "Hello!",
                 success = false,
-                onLogin = onLogin,
-                onEnter = onEnter
+                onLogin = onLogin
             )
         )
         logger.info("LoginFlow initialized")
@@ -35,30 +33,14 @@ class LoginFlow(
         logger.info("onLogin clicked")
         api.login(LoginReq(name, pass), { resp ->
             logger.info("success received: $resp")
-            updateUI(resp)
-            logger.info("ui updated")
+            navigator.showOrderFlow()
         }, { err ->
             logger.info("error received: $err")
             showErr(err)
         })
     }
 
-    private val onEnter: () -> Unit = {
-        navigator.showOrderFlow()
-    }
-
     private fun showErr(err: String) {
         post(LoginErrUIState(err))
-    }
-
-    private fun updateUI(resp: LoginResp) {
-        post(
-            LoginPageUIState(
-                greeting = "Yo, ${resp.name}!",
-                resp.success,
-                onLogin,
-                onEnter
-            )
-        )
     }
 }

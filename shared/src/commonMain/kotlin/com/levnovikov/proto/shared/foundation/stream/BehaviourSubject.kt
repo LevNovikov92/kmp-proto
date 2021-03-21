@@ -16,7 +16,6 @@ class BehaviourSubject<T>(default: T) : Subject<T> {
     }
 
     override fun dispose(listener: Listener<T>) {
-        listener.onDispose()
         listeners.remove(listener)
     }
 

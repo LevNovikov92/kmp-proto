@@ -40,7 +40,7 @@ class OfferController: UIViewController, OfferNavigator, Listener {
         rejectButton.setTitleColor(.blue, for: .normal)
         rejectButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(rejectButton)
-        rejectButton.addTarget(self, action: #selector(onConfirm), for: .touchUpInside)
+        rejectButton.addTarget(self, action: #selector(onReject), for: .touchUpInside)
 
         offerDetailsLabel = UILabel()
         offerDetailsLabel.text = "Offer data"
@@ -69,12 +69,11 @@ class OfferController: UIViewController, OfferNavigator, Listener {
     }
 
     @objc func onConfirm() {
-        print(">>> confirm clicked")
         confirm()
+        debugAddOrder()
     }
 
     @objc func onReject() {
-        print(">>> reject clicked")
         reject()
     }
 
@@ -86,15 +85,22 @@ class OfferController: UIViewController, OfferNavigator, Listener {
         flow.doInit()
     }
 
-    func finishOffer() {
-        print(">>> finish offer")
+    func dismiss() {
         willMove(toParent: nil)
         view.removeFromSuperview()
         removeFromParent()
     }
 
-    func onDispose() {
-
+    private func debugAddOrder() {
+        let order = Order(
+                id: 1,
+                steps: [
+                    Step.PickUp(pickup: "KFC", stuff: "Burger"),
+                    Step.DropOff(dropOff: "JLT")
+                ],
+                current: 0
+        )
+        appFactory.orderService.addNewOrder(order: order)
     }
 
     func onNext(v: Any?) {
@@ -107,6 +113,6 @@ class OfferController: UIViewController, OfferNavigator, Listener {
     }
 
     private func updateOffer(state: OfferUIState) {
-        offerDetailsLabel.text = "Delivery from \(state.pickUp) tp \(state.dropOff)"
+        offerDetailsLabel.text = state.offerInfo
     }
 }

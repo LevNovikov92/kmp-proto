@@ -20,10 +20,8 @@ class IdleController: UIViewController, IdleNavigator, Listener {
     }
 
     private func debugTriggerOfferAfterDelay() {
-        print(">>> Trigger debugTriggerOfferAfterDelay")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            print(">>> offer sent")
-            self.appFactory.offerListener.post(offer: Offer(id: 1, pickUp: "Baker Street", dropOff: "Home"))
+            self.appFactory.offerListener.post(offer: Offer(id: 1, pickUp: "KFC", dropOff: "JLT"))
         }
     }
 
@@ -76,7 +74,7 @@ class IdleController: UIViewController, IdleNavigator, Listener {
     }
 
     func onNext(v: Any?) {
-        print(">>> state received: \(v ?? "nil")")
+        print(">>> IdleController: state received: \(v ?? "nil")")
         if let s = v as? IdleUiState {
             updateIdle(state: s)
             onStatusChanged = s.onStatusChanged
@@ -89,7 +87,6 @@ class IdleController: UIViewController, IdleNavigator, Listener {
     }
 
     func showOffer() {
-        print(">>> show offer")
         let offerController = OfferController()
         offerController.view.bounds = view.bounds
         addChild(offerController)
@@ -98,10 +95,7 @@ class IdleController: UIViewController, IdleNavigator, Listener {
     }
 
     func showOrder() {
-        // TODO
-    }
-
-    func onDispose() {
-
+        let controller = OrderController()
+        present(controller, animated: true, completion: nil)
     }
 }

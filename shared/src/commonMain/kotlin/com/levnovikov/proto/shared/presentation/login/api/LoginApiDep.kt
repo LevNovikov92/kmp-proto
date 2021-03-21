@@ -1,4 +1,4 @@
-package com.levnovikov.proto.shared.presentation.login.deps
+package com.levnovikov.proto.shared.presentation.login.api
 
 /**
  * Author: lev.novikov

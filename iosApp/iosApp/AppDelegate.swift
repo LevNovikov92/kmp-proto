@@ -19,8 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         initDI()
         window = UIWindow(frame: UIScreen.main.bounds)
-//        let loginController = LoginController()
-        let loginController = IdleController()
+        let loginController = LoginController()
         window!.rootViewController = loginController
         window!.makeKeyAndVisible()
         return true

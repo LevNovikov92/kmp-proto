@@ -9,7 +9,6 @@ interface Stream<T> {
 
 interface Listener<T> {
     fun onNext(v: T)
-    fun onDispose() {}
 }
 
 interface Subject<T> : Stream<T> {

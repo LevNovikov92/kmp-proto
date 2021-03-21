@@ -1,6 +1,5 @@
 package com.levnovikov.proto.shared.presentation.login.api
 
-import com.levnovikov.proto.shared.presentation.login.deps.LoginApiDep
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 

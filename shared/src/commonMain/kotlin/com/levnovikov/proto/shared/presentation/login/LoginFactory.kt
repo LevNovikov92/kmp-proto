@@ -1,10 +1,8 @@
 package com.levnovikov.proto.shared.presentation.login
 
-import com.levnovikov.proto.shared.presentation.login.LoginFlow
-import com.levnovikov.proto.shared.presentation.login.LoginNavigator
 import com.levnovikov.proto.shared.presentation.login.api.LoginApi
 import com.levnovikov.proto.shared.presentation.login.api.LoginApiImpl
-import com.levnovikov.proto.shared.presentation.login.deps.LoginApiDep
+import com.levnovikov.proto.shared.presentation.login.api.LoginApiDep
 
 /**
  * Author: lev.novikov

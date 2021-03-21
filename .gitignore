@@ -16,3 +16,4 @@ local.properties
 /shared/build/
 /iosApp/iosApp.xcodeproj/
 /iosApp/.idea/
+/androidApp/build/

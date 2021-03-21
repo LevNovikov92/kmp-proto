@@ -7,11 +7,12 @@ import com.levnovikov.proto.shared.business.services.driver.DriverProgressRepoIm
  * Author: lev.novikov
  * Date: 17/3/21.
  */
-class BookingFactory(
-    private val appFactory: AppFactory
+class OrderFactory(
+    private val appFactory: AppFactory,
+    private val orderNavigator: OrderNavigator
 ) {
 
     private fun driverStateRepo() = DriverProgressRepoImpl(appFactory.kvStore)
 
-    fun bookingFlow() = OrderFlow(appFactory.orderService)
+    fun bookingFlow() = OrderFlow(appFactory.orderService, orderNavigator)
 }
